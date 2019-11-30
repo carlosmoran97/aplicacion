@@ -1,6 +1,5 @@
-# flutter_app_repaso
+# Aplicación de repaso para los conceptos de Stateful y Stateless Widgets
 
-A new Flutter application.
 
 ## Codelab para creación de formularios
 
