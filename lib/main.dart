@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_repaso/pokemon_api_provider.dart';
+import 'package:flutter_app_repaso/pokemon_model.dart';
 
 void main(){
   runApp(MyApp());
@@ -43,24 +45,29 @@ class _CounterState extends State<Counter> {
   void initState() {
     // TODO: implement initState
     count = 0;
+
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Text("Haz dado $count taps."),
-          RaisedButton(
-            child: Text("Tap"),
-            onPressed: (){
-              setState(() {
-                count++;
-              });
-            }
-          ),
-        ],
-      ),
+    return FutureBuilder(
+      future: PokemonApiProvider().getPokemons(),
+      builder: (BuildContext context, AsyncSnapshot<List<Pokemon>> snapshot){
+        if(!snapshot.hasData){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return ListView(
+          children: snapshot.data.map((Pokemon pokemon){
+            return ListTile(
+              title: Text(pokemon.name),
+              subtitle: Text(pokemon.url),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
